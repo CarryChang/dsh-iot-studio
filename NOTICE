@@ -1,0 +1,21 @@
+dsh-iot-studio
+Copyright (c) 2026 CarryChang
+
+This product includes software derived from:
+
+  hass-xiaomi-miot
+  https://github.com/al-one/hass-xiaomi-miot
+  Copyright (c) al-one
+  Licensed under the Apache License, Version 2.0
+
+  The TypeScript implementations of the Xiaomi cloud login, the RC4 /
+  HMAC-SHA1 / SHA1 request signing scheme, the device listing flow, and the
+  MIoT spec instance lookup are adaptations of the original Python sources in
+  custom_components/xiaomi_miot/core/ (xiaomi_cloud.py, utils.py, miot_spec.py)
+  of hass-xiaomi-miot, modified for this plugin.
+
+MIoT specification instances are fetched at runtime from the community
+mirrors miot-spec.org / spec.miot-spec.com, which publish device specs
+following the Xiaomi MIoT-Spec standard
+(https://iot.mi.com/new/doc/design/spec/overall). This plugin bundles no
+specification data; it downloads what the device urns resolve to.

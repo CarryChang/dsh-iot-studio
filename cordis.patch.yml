@@ -1,0 +1,18 @@
+# dsh-iot-studio bundle patch.
+# Mounts one plugin that contributes the IoT device-control methodology skill and
+# registers the iot_list_devices / iot_get_spec / iot_get_props / iot_set_prop /
+# iot_call_action tools against the Xiaomi cloud MIoT API. Credentials come from
+# this config block or the XIAOMI_USERNAME / XIAOMI_PASSWORD environment; the
+# service token cache lives under stateDir and is never logged.
+
+- insert:
+    - id: iot-studio
+      name: 'dsh-iot-studio'
+      config:
+        defaultBrand: xiaomi
+        xiaomi:
+          username: ''
+          password: ''
+          serverCountry: cn
+          stateDir: ''
+          httpTimeoutSec: 15

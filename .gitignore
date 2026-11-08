@@ -1,0 +1,5 @@
+node_modules/
+*.tsbuildinfo
+.env
+auth-cache/
+.xiaomi-token*
