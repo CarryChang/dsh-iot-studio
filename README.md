@@ -1,5 +1,7 @@
 # dsh-iot-studio
 
+English | [简体中文](README.zh-CN.md)
+
 IoT studio plugin for [DeepSeek Harness](https://github.com/deepseek-ai): let the agent discover, inspect, and control your smart-home devices through typed tools. Xiaomi / Mijia lands first; more IoT brands attach behind the same provider seam.
 
 > **Open-source attribution.** The Xiaomi cloud protocol implementation in this

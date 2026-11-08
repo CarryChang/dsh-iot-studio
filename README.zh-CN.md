@@ -1,5 +1,7 @@
 # dsh-iot-studio
 
+[English](README.md) | 简体中文
+
 面向 [DeepSeek Harness](https://github.com/deepseek-ai) 的 IoT 工作室插件：让 agent 通过类型化工具发现、查看并控制你的智能家居设备。首发支持小米 / 米家；更多 IoT 品牌沿同一 Provider 接缝接入。
 
 > **开源来源声明。** 本插件的小米云协议实现（登录、RC4/SHA1 请求签名、设备列表、

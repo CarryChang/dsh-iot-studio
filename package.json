@@ -34,6 +34,7 @@
     "access": "public"
   },
   "license": "Apache-2.0",
+  "author": "CarryChang",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/CarryChang/dsh-iot-studio.git"
