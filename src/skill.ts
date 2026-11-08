@@ -6,12 +6,19 @@
  */
 
 export const SKILL_NAME = 'iot-studio'
-export const SKILL_DESCRIPTION = 'Control Xiaomi / Mijia smart-home devices from the agent: discover devices, read their MIoT spec, then read state and change properties or run actions.'
-export const SKILL_WHEN_TO_USE = 'The user asks about smart-home devices: 米家 / Xiaomi device status, turning things on or off, adjusting values, scenes backed by devices, or IoT automation questions.'
+export const SKILL_DESCRIPTION = 'Control smart-home devices from the agent through a generic IoT layer: discover devices, read their specification, then read state and change properties or run actions. Brands attach as providers; xiaomi / mijia ships built-in.'
+export const SKILL_WHEN_TO_USE = 'The user asks about smart-home or IoT devices: turning things on or off, checking status, adjusting values, controlling lights, plugs, sensors, vacuums, or any device registered under a supported brand account.'
 
 export const SKILL_BODY = `# IoT Studio: device-control methodology
 
-You operate real physical devices through the Xiaomi cloud. Precision and confirmation beat cleverness.
+You operate real physical devices through brand cloud accounts via one generic tool layer.
+Precision and confirmation beat cleverness. Built-in brand today: xiaomi / mijia; every other
+provider that registers behind the same seam behaves identically.
+
+## New devices need no setup
+
+A freshly paired device appears in the device list as soon as the brand app or cloud knows it.
+Never ask the user to "register" a device into this plugin; re-run the list instead.
 
 ## Fixed call order
 
@@ -43,5 +50,5 @@ Ask the user once, explicitly, before operating: door locks, gates, cameras, any
 - Cache the device list mentally: map the user's room/nickname to one did; if two devices share a name, ask which one.
 - Batch reads: one 「iot_get_props」 for all needed properties, not one call per property.
 - Never print passwords, service tokens, or the auth cache file contents in replies.
-- Multi-brand: every tool takes 「brand」; it is "xiaomi" today. Future providers keep identical semantics.
+- Multi-brand: every tool takes 「brand」; the registry lists what is loaded. New brands keep identical semantics, so this workflow transfers unchanged.
 `

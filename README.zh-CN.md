@@ -2,16 +2,18 @@
 
 [English](README.md) | 简体中文
 
-面向 [DeepSeek Harness](https://github.com/deepseek-ai) 的 IoT 工作室插件：让 agent 通过类型化工具发现、查看并控制你的智能家居设备。首发支持小米 / 米家；更多 IoT 品牌沿同一 Provider 接缝接入。
+面向 [DeepSeek Harness](https://github.com/deepseek-ai) 的 IoT 工作室插件：**一个通用、品牌无关的工具层**，让 agent 发现、查看并控制智能家居设备。不绑定任何单一厂家——新 IoT 设备在品牌 App 里配好即可直接使用；新品牌只需注册一个 `IotBrandProvider` 即可接入。内置 **小米 / 米家** provider。
 
-> **开源来源声明。** 本插件的小米云协议实现（登录、RC4/SHA1 请求签名、设备列表、
-> MIoT spec 查询）由开源项目 [hass-xiaomi-miot](https://github.com/al-one/hass-xiaomi-miot)
+> **开源来源声明。** 内置 xiaomi provider 的小米云协议实现（登录、RC4/SHA1 请求签名、
+> 设备列表、MIoT spec 查询）由开源项目 [hass-xiaomi-miot](https://github.com/al-one/hass-xiaomi-miot)
 > （作者 **al-one**，**Apache License 2.0**）的 Python 源码移植改写而来，本仓库采用
 > 与之一致的 Apache-2.0 协议。逐文件的来源与改动清单见 [NOTICE](NOTICE) 与
 > [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。本插件是独立的衍生项目，
 > 与小米公司、Home Assistant 项目无隶属或背书关系。
 
 ## 提供给 agent 的能力
+
+5 个品牌无关的工具，每个调用都可带可选的 `brand` 参数：
 
 | 工具 | 用途 |
 |---|---|
@@ -25,13 +27,32 @@
 列表 → spec → 读 → 写/动作 → 回读确认；操作门锁、摄像头、插座、加热器、
 扫地机前必须先向用户确认。
 
+## 新设备：零配置即用
+
+设备在每次调用时从品牌云账号实时发现。昨天刚在品牌 App 里配网的传感器、
+台灯、插座，今天就已经可用：
+
+```
+> 新买的加湿器能用吗？ → iot_list_devices 找到它 → iot_get_spec → 直接控制
+```
+
+不需要逐台配置，不需要重启插件，不需要改代码。
+
+## 新品牌：注册一个 provider
+
+一个品牌 = `src/brands/<name>/` 一个实现 `IotBrandProvider` 的目录
+（设备列表、spec、属性读写、动作调用）+ `src/brands/registry.ts` 一行
+`register()`。工具签名、配置结构、token 缓存布局、技能契约全部不变，
+agent 行为原样迁移。第二个品牌的云端设置会在 `xiaomi:` 旁边获得独立的
+`<brand>:` config 块。
+
 ## 安装
 
 ```sh
 dsh plugin --profile web add https://github.com/CarryChang/dsh-iot-studio
 ```
 
-## 配置凭据
+## 配置凭据（内置品牌：xiaomi）
 
 方式 A —— 环境变量（推荐，密码不落盘）：
 
@@ -88,11 +109,12 @@ src/
 
 ## 限制（v0.1）
 
+- 内置 provider 目前仅 xiaomi；接缝是通用的，更多品牌按需接入。
 - 登录遇到验证码 / 短信 / 邮箱验证时不做交互：工具返回可操作的提示，
   请先在 account.xiaomi.com 或米家 App 完成一次验证再重试。
 - 仅支持 MIoT spec 设备；model 不是 `urn:miot-spec-v2:...` 的老 miio 设备暂不支持。
 - 仅云控制；暂无局域网本地 token 通道。
-- 通过 `serverCountry` 支持国区与海外服务器站点。
+- 通过 `serverCountry` 支持小米国区与海外服务器站点。
 
 ## 开发
 

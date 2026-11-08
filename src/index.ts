@@ -1,8 +1,9 @@
 /**
- * dsh-iot-studio Cordis plugin entry. Registers the IoT-control methodology skill and five
- * brand-agnostic iot_* tools routed through the brand registry (xiaomi today). Cloud access is
- * scoped to the configured Xiaomi account; tokens are cached under stateDir and never returned
- * in tool output.
+ * dsh-iot-studio Cordis plugin entry. Registers the IoT device-control methodology skill and
+ * five brand-neutral iot_* tools routed through the brand registry. A device is usable as soon
+ * as its brand account exposes it to the cloud; adding a brand means registering one provider.
+ * Cloud access is scoped to configured accounts; tokens are cached under stateDir and never
+ * returned in tool output.
  * @module dsh-iot-studio
  */
 
@@ -19,7 +20,7 @@ import { IotUserError, type IotCallResult } from './brands/types.ts'
 export const name = 'iot-studio'
 export const inject = ['skills', 'tools']
 
-/** Per-brand Xiaomi account settings; empty strings mean "read the environment instead". */
+/** Built-in brand account settings; empty strings mean "read the environment instead". */
 export interface XiaomiConfig {
   username: string
   password: string
@@ -46,7 +47,7 @@ export const Config: z<Config> = z.object({
   }),
 })
 
-const BRAND_DESCRIPTION = `IoT brand key; defaults to the configured default brand. Currently supported: xiaomi.`
+const BRAND_DESCRIPTION = 'IoT brand key; defaults to the configured default brand. Built-in today: xiaomi (any brand account you add to the registry becomes usable here).'
 
 function settings(config: Config): IotStudioSettings {
   return { defaultBrand: config.defaultBrand, xiaomi: { ...config.xiaomi } }
@@ -87,8 +88,8 @@ export async function apply(ctx: Context, config: Config): Promise<void> {
   ctx.effect(() => ctx.tools.register(defineTool({
     name: 'iot_list_devices',
     description:
-      `List every IoT device visible to the configured cloud account: did, name, model urn, online flag, home and room. `
-      + BRAND_DESCRIPTION + ' Run this first in any IoT task; every other tool needs a did from here.',
+      `List every IoT device the configured brand account can see: did, name, model, online flag, home and room. `
+      + BRAND_DESCRIPTION + ' A newly paired device needs no plugin change: it appears here once the brand cloud knows it. Run this first in any IoT task; every other tool needs a did from here.',
     parameters: {
       brand: { type: 'string', description: BRAND_DESCRIPTION },
     },
@@ -111,10 +112,10 @@ export async function apply(ctx: Context, config: Config): Promise<void> {
   ctx.effect(() => ctx.tools.register(defineTool({
     name: 'iot_get_spec',
     description:
-      'Fetch and summarize the MIoT specification for one device did: services with friendly '
-      + 'names, each property (piid, access, format, value-range, value-list) and each action '
-      + '(aiid, in/out piids). Read this before any iot_set_prop / iot_call_action so ids and '
-      + 'allowed values come from the spec, not guesses.',
+      'Fetch and summarize the device specification (MIoT urn for xiaomi devices): services with '
+      + 'friendly names, each property (piid, access, format, value-range, value-list) and each '
+      + 'action (aiid, in/out piids). Read this before any iot_set_prop / iot_call_action so ids '
+      + 'and allowed values come from the spec, not guesses.',
     parameters: {
       did: { type: 'string', required: true, description: 'Device id from iot_list_devices.' },
       brand: { type: 'string', description: BRAND_DESCRIPTION },

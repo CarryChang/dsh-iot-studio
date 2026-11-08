@@ -2,10 +2,10 @@
 
 English | [简体中文](README.zh-CN.md)
 
-IoT studio plugin for [DeepSeek Harness](https://github.com/deepseek-ai): let the agent discover, inspect, and control your smart-home devices through typed tools. Xiaomi / Mijia lands first; more IoT brands attach behind the same provider seam.
+IoT studio plugin for [DeepSeek Harness](https://github.com/deepseek-ai): **one generic, brand-neutral tool layer** for the agent to discover, inspect, and control smart-home devices. Not tied to any single vendor — a new IoT device is usable immediately once paired in its brand app, and a new brand attaches by registering one `IotBrandProvider`. Ships with **xiaomi / mijia** built-in.
 
-> **Open-source attribution.** The Xiaomi cloud protocol implementation in this
-> plugin (login, RC4/SHA1 request signing, device listing, MIoT spec lookup) is
+> **Open-source attribution.** The built-in xiaomi provider's cloud protocol
+> (login, RC4/SHA1 request signing, device listing, MIoT spec lookup) is
 > adapted for TypeScript from [hass-xiaomi-miot](https://github.com/al-one/hass-xiaomi-miot)
 > by **al-one**, licensed under **Apache License 2.0** — the same license as
 > this repository. See [NOTICE](NOTICE) and [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)
@@ -14,6 +14,8 @@ IoT studio plugin for [DeepSeek Harness](https://github.com/deepseek-ai): let th
 > Xiaomi Inc. or the Home Assistant project.
 
 ## What it gives the agent
+
+Five brand-neutral tools; every call takes an optional `brand` key:
 
 | Tool | Purpose |
 |---|---|
@@ -27,13 +29,33 @@ Plus a bundled skill (`iot-studio`) that teaches the agent the safe loop:
 list → spec → read → act → verify, with explicit confirmation before touching
 locks, cameras, power strips, heaters, and vacuums.
 
+## New devices: zero setup
+
+Devices are discovered from the brand cloud account at call time. A sensor,
+lamp, or plug you paired yesterday in the brand app already works:
+
+```
+> 新买的加湿器能用吗？ → iot_list_devices finds it → iot_get_spec → control it
+```
+
+No per-device configuration, no plugin restart, no code change.
+
+## New brands: one provider to register
+
+A brand is one folder under `src/brands/<name>/` implementing `IotBrandProvider`
+(list devices, get spec, read/write properties, call actions) plus one
+`register()` line in `src/brands/registry.ts`. Tool signatures, config shape,
+auth-cache layout, and the skill contract stay identical, so agent behavior
+transfers unchanged. A second brand's cloud settings will get their own
+`<brand>:` config block beside `xiaomi:`.
+
 ## Install
 
 ```sh
 dsh plugin --profile web add https://github.com/CarryChang/dsh-iot-studio
 ```
 
-## Configure credentials
+## Configure credentials (built-in brand: xiaomi)
 
 Option A — environment (recommended, keeps secrets out of files):
 
@@ -91,13 +113,14 @@ only ever see the `IotBrandProvider` interface.
 
 ## Limitations (v0.1)
 
+- Built-in providers: xiaomi only so far; the seam is generic and more brands land on request.
 - Captcha / SMS / email verification during login is not interactive: the tool
   returns an actionable message asking you to sign in once at
   account.xiaomi.com or in the Mi Home app.
 - Legacy miio-only devices (model is not a `urn:miot-spec-v2:...`) are not
   supported; MIoT-spec devices only.
 - Cloud control only; no LAN/local token path yet.
-- Mainland China and overseas server sites are supported via `serverCountry`.
+- Mainland China and overseas Xiaomi server sites are supported via `serverCountry`.
 
 ## Development
 

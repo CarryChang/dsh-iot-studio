@@ -2,6 +2,24 @@
 
 All notable changes to dsh-iot-studio are documented here.
 
+## 0.1.1 — 2026-11-08
+
+Positioning: a generic IoT tool layer, not a single-vendor plugin.
+
+- Plugin-facing text is now brand-neutral end to end: package description and
+  keywords, tool descriptions, the skill contract, README (EN/CN), and the
+  bundle patch comments present dsh-iot-studio as one IoT access layer with
+  xiaomi as the first built-in provider.
+- Documented the two extension paths users actually hit: a newly paired device
+  needs zero setup (it is discovered live from the brand cloud), and a new
+  brand is one `IotBrandProvider` folder plus one `register()` line; tool
+  signatures and skill semantics stay identical.
+- Xiaomi-specific wording moved under explicit "built-in brand: xiaomi"
+  sections (credentials, limitations, provenance); the Apache-2.0 attribution
+  to al-one/hass-xiaomi-miot is unchanged and now scopes to the xiaomi
+  provider.
+- No behavior change: tools, protocol, config keys, and errors are as in 0.1.0.
+
 ## 0.1.0 — 2026-11-08
 
 First release. Converts the Xiaomi cloud capability of the open-source

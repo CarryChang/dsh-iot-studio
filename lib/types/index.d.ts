@@ -1,15 +1,16 @@
 /**
- * dsh-iot-studio Cordis plugin entry. Registers the IoT-control methodology skill and five
- * brand-agnostic iot_* tools routed through the brand registry (xiaomi today). Cloud access is
- * scoped to the configured Xiaomi account; tokens are cached under stateDir and never returned
- * in tool output.
+ * dsh-iot-studio Cordis plugin entry. Registers the IoT device-control methodology skill and
+ * five brand-neutral iot_* tools routed through the brand registry. A device is usable as soon
+ * as its brand account exposes it to the cloud; adding a brand means registering one provider.
+ * Cloud access is scoped to configured accounts; tokens are cached under stateDir and never
+ * returned in tool output.
  * @module dsh-iot-studio
  */
 import type { Context } from '@deepseek-ai/cordis';
 import z from '@deepseek-ai/schemastery';
 export declare const name = "iot-studio";
 export declare const inject: string[];
-/** Per-brand Xiaomi account settings; empty strings mean "read the environment instead". */
+/** Built-in brand account settings; empty strings mean "read the environment instead". */
 export interface XiaomiConfig {
     username: string;
     password: string;

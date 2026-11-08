@@ -1,7 +1,7 @@
 {
   "name": "dsh-iot-studio",
-  "description": "IoT studio for DeepSeek Harness: control Xiaomi / Mijia smart-home devices through the Xiaomi cloud MIoT API via typed iot_* tools (list devices, read spec, get/set properties, call actions). Brand-provider architecture: xiaomi lands first, more IoT brands attach behind the same IotBrandProvider seam.",
-  "version": "0.1.0",
+  "description": "Generic IoT studio for DeepSeek Harness: one brand-neutral tool layer (iot_list_devices / iot_get_spec / iot_get_props / iot_set_prop / iot_call_action) to discover, inspect, and control smart-home devices. Pair a new device in the brand app and it is ready to use with zero plugin changes; add a new brand by registering one IotBrandProvider. Ships with xiaomi / mijia built-in (Xiaomi cloud MIoT protocol adapted from al-one/hass-xiaomi-miot, Apache-2.0).",
+  "version": "0.1.1",
   "icon": "./icon.svg",
   "type": "module",
   "main": "lib/index.js",
@@ -49,7 +49,11 @@
     "dsh-plugin",
     "plugin",
     "iot",
+    "iot-platform",
     "smarthome",
+    "smart-home",
+    "device-control",
+    "home-automation",
     "xiaomi",
     "miot",
     "mijia"
